@@ -1,14 +1,8 @@
 import "./globals.css";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
-import {Inter} from "next/font/google"
+import { ClerkProvider } from "@clerk/nextjs";
+import { Inter } from "next/font/google";
 
-const inter = Inter({subsets:["latin"]});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "NeoHire",
