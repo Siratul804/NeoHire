@@ -2,25 +2,18 @@ const mongoose = require("mongoose");
 
 const ResumeSchema = new mongoose.Schema(
   {
-    user_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    }, // Reference to User
-    uploadedAt: { type: Date, default: Date.now },
-
-    // AI-extracted details
-    parsedSkills: [{ type: String }],
-    parsedExperience: [
+    clerkId: { type: String, required: true, unique: true },
+    extractedSkills: [{ type: String }],
+    extractedExperience: [
       {
-        company: { type: String },
-        position: { type: String },
-        years: { type: Number },
+        company: String,
+        role: String,
+        duration: Number, // in months
       },
     ],
-
-    // AI Suggested Jobs
-    matchedJobs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Job" }], // Reference to Job model
+    extractedProjects: [{ type: String }],
+    aiScore: { type: Number, required: true }, // AI-based score (0-100)
+    matchedJobs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Job" }],
   },
   { timestamps: true }
 );
