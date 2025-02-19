@@ -30,13 +30,13 @@ export default async function Navbar() {
         {/* Action Buttons */}
         <div className="flex items-center space-x-2 md:space-x-4">
           <SignedIn>
-            <Link href="/dashboard">
+            <Link href="/career-insights">
               <Button
                 variant="outline"
                 className="hidden md:inline-flex items-center gap-2"
               >
                 <LayoutDashboard className="h-4 w-4" />
-                Industry Insights
+                Career Insights
               </Button>
               <Button variant="ghost" className="md:hidden w-10 h-10 p-0">
                 <LayoutDashboard className="h-4 w-4" />
@@ -56,16 +56,16 @@ export default async function Navbar() {
                 <DropdownMenuItem asChild>
                   <Link href="/resume" className="flex items-center gap-2">
                     <FileText className="h-4 w-4" />
-                    Build Resume
+                    Resume Analyzer 
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link
-                    href="/ai-cover-letter"
+                    href="/jobs"
                     className="flex items-center gap-2"
                   >
                     <PenBox className="h-4 w-4" />
-                    Cover Letter
+                    Jobs 
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
