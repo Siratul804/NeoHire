@@ -38,7 +38,7 @@ export default function Dashboard() {
   return (
     <div className="pt-20 md:pt-28 pb-10">
       <div className="flex items-center justify-between  mb-6">
-        <h1 className="text-6xl font-bold gradient-title">
+        <h1 className="text-4xl font-bold gradient-title">
           Dashboard Overview
         </h1>
       </div>
