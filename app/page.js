@@ -83,10 +83,10 @@ export default function LandingPage() {
               Ready to Accelerate Your Career?
             </h2>
             <p className="mx-auto max-w-[600px] text-primary-foreground/80 md:text-xl">
-              Join thousands of professionals who are advancing their careers
+              Join us right now to advancing your career
               with AI-powered guidance.
             </p>
-            <Link href="/dashboard" passHref>
+            <Link href="/sign-in" passHref>
               <Button
                 size="lg"
                 variant="secondary"
