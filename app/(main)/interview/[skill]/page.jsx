@@ -1,5 +1,7 @@
+// app/interview/[skill]/page.js
 "use client";
 
+import React from "react"; // Import React
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,17 +9,51 @@ import { Textarea } from "@/components/ui/textarea";
 import { Mic, Video, SkipForward } from "lucide-react";
 import Link from "next/link";
 
-const questions = [
-  "What is JavaScript?",
-  "Explain closures in JavaScript.",
-  "What are promises in JavaScript?",
-  "What is the difference between var, let, and const?",
-  "Explain event delegation in JavaScript.",
-];
+const questionsBySkill = {
+  javascript: [
+    "What is JavaScript?",
+    "Explain closures in JavaScript.",
+    "What are promises in JavaScript?",
+    "What is the difference between var, let, and const?",
+    "Explain event delegation in JavaScript.",
+  ],
+  react: [
+    "What is React?",
+    "Explain the virtual DOM.",
+    "What are hooks in React?",
+    "What is the difference between state and props?",
+    "Explain React component lifecycle methods.",
+  ],
+  nodejs: [
+    "What is Node.js?",
+    "Explain the event loop in Node.js.",
+    "What is npm?",
+    "What are streams in Node.js?",
+    "Explain the difference between `require` and `import`.",
+  ],
+  python: [
+    "What is Python?",
+    "Explain list comprehensions in Python.",
+    "What are decorators in Python?",
+    "What is the difference between `deepcopy` and `shallowcopy`?",
+    "Explain the GIL in Python.",
+  ],
+  java: [
+    "What is Java?",
+    "Explain the concept of object-oriented programming in Java.",
+    "What is the difference between `==` and `.equals()` in Java?",
+    "What are Java generics?",
+    "Explain the Java memory model.",
+  ],
+};
 
-export default function Interview() {
+export default function Interview({ params }) {
+  const { skill } = React.use(params); // Unwrap the params Promise
+
+  const questions = questionsBySkill[skill] || [];
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState(Array(questions.length).fill(""));
+  const [fileUploaded, setFileUploaded] = useState(false);
 
   const handleNextQuestion = () => {
     if (currentQuestionIndex < questions.length - 1) {
@@ -31,9 +67,20 @@ export default function Interview() {
     setAnswers(newAnswers);
   };
 
+  const handleFileUpload = (event) => {
+    if (event.target.files.length > 0) {
+      setFileUploaded(true);
+    }
+  };
+
+  const triggerFileInput = () => {
+    document.getElementById("fileUpload").click();
+  };
+
   const handleSubmit = () => {
     console.log("Submitted Answers:", answers);
     alert("Interview submitted successfully!");
+    setFileUploaded(false); // Reset file upload state after submission
   };
 
   return (
@@ -66,10 +113,25 @@ export default function Interview() {
             />
             <div className="flex justify-between">
               <div className="space-x-2">
-                <Button size="icon">
+                <input
+                  type="file"
+                  accept="audio/*,video/*"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                  id="fileUpload"
+                />
+                <Button
+                  size="icon"
+                  disabled={fileUploaded}
+                  onClick={triggerFileInput}
+                >
                   <Mic />
                 </Button>
-                <Button size="icon">
+                <Button
+                  size="icon"
+                  disabled={fileUploaded}
+                  onClick={triggerFileInput}
+                >
                   <Video />
                 </Button>
               </div>

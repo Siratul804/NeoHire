@@ -7,8 +7,6 @@ const InterviewSchema = new mongoose.Schema(
     speechClarityScore: { type: Number, min: 0, max: 100 }, // question clarity
     confidenceScore: { type: Number, min: 0, max: 100 }, // question confidence
     toneAnalysis: { type: String }, // e.g., "Calm", "Confident", "Nervous"
-    feedback: { type: String }, // AI-generated feedback
-    improvementSuggestions: [{ type: String }],
   },
   { timestamps: true }
 );
