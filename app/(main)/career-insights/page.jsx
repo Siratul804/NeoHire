@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import Link from "next/link";
 
 const CareerInsights = () => {
   // Dummy salary data for the chart
@@ -37,31 +38,9 @@ const CareerInsights = () => {
     { name: "DevOps Engineer", min: 75, median: 110, max: 150 },
   ];
 
-  const getDemandLevelColor = (level) => {
-    switch (level.toLowerCase()) {
-      case "high":
-        return "bg-green-500";
-      case "medium":
-        return "bg-yellow-500";
-      case "low":
-        return "bg-red-500";
-      default:
-        return "bg-gray-500";
-    }
-  };
 
-  const getMarketOutlookInfo = (outlook) => {
-    switch (outlook.toLowerCase()) {
-      case "positive":
-        return { icon: TrendingUp, color: "text-green-500" };
-      case "neutral":
-        return { icon: LineChart, color: "text-yellow-500" };
-      case "negative":
-        return { icon: TrendingDown, color: "text-red-500" };
-      default:
-        return { icon: LineChart, color: "text-gray-500" };
-    }
-  };
+
+ 
 
   const topSkills = [
     "React",
@@ -74,6 +53,14 @@ const CareerInsights = () => {
 
   return (
     <div className="container space-y-6 px-12 pt-20 md:pt-28 pb-10">
+     <div className="mb-8">
+        <Link
+          href="/dashboard"
+          className="text-sm text-gray-200"
+        >
+          ← Back to Dashboard
+        </Link>
+      </div>
       <div className="flex items-center justify-between  mb-6">
         <h1 className="text-4xl font-bold gradient-title">Career Trends</h1>
       </div>

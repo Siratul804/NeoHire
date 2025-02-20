@@ -36,7 +36,7 @@ const dummyData = [
 
 export default function Dashboard() {
   return (
-    <div className="pt-20 md:pt-28 pb-10">
+    <div className="pt-20 px-8 md:pt-28 pb-10">
       <div className="flex items-center justify-between  mb-6">
         <h1 className="text-4xl font-bold gradient-title">
           Dashboard Overview
