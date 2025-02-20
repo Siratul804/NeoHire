@@ -24,6 +24,8 @@ export default function UserProfile() {
         const response = await fetch(`/api/getUserById/${clerkUser.id}`);
         const data = await response.json();
 
+        console.log(data);
+
         if (!response.ok) {
           if (response.status === 404) {
             setShowRegistration(true); // User not found, show registration
