@@ -7,8 +7,8 @@ export const howItWorks = [
     icon: <UserPlus className="w-8 h-8 text-primary" />,
   },
   {
-    title: "Craft Your Documents",
-    description: "Create ATS-optimized resumes and compelling cover letters",
+    title: "Screens Your Documents",
+    description: "screens optimized resumes and matches best suited jobs",
     icon: <FileEdit className="w-8 h-8 text-primary" />,
   },
   {

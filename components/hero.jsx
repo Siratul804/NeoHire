@@ -27,28 +27,28 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="w-full pt-36 md:pt-48 pb-10">
+    <section className="w-full pt-36 md:pt-44 pb-10">
       <div className="space-y-6 text-center">
         <div className="space-y-6 mx-auto">
-          <h1 className="text-5xl font-bold md:text-6xl lg:text-7xl xl:text-8xl gradient-title animate-gradient">
-            Your AI Career Coach for
+          <h1 className="text-4xl font-bold md:text-6xl lg:text-7xl xl:text-8xl gradient-title animate-gradient">
+            Your AI Platform For
             <br />
-            Professional Success
+             Professional Success
           </h1>
           <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl">
-            Advance your career with personalized guidance, interview prep, and
+            Advance your career with personalized Resume screening, interview prep, and
             AI-powered tools for job success.
           </p>
         </div>
         <div className="flex justify-center space-x-4">
-          <Link href="/dashboard">
+          <Link href="/sign-in">
             <Button size="lg" className="px-8">
               Get Started
             </Button>
           </Link>
-          <Link href="https://www.youtube.com/roadsidecoder">
+          <Link href="/">
             <Button size="lg" variant="outline" className="px-8">
-              Watch Demo
+              Explore more
             </Button>
           </Link>
         </div>
