@@ -1,13 +1,22 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { PlusCircle, MinusCircle } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation"; 
 
 const UserRegistration = ({ clerkUser }) => {
-  //   console.log(clerkUser.imageUrl);
+  const router = useRouter();
   const [formData, setFormData] = useState({
-    clerkId: clerkUser?.id || "", // Auto-populated from Clerk
-    email: clerkUser.emailAddresses[0].emailAddress || "", // Auto-populated from Clerk
-    name: clerkUser?.firstName || "", // Auto-populated from Clerk
-    profilePicture: clerkUser?.imageUrl || "", // Auto-populated from Clerk
+    clerkId: clerkUser?.id || "",
+    email: clerkUser.emailAddresses[0].emailAddress || "",
+    name: clerkUser?.firstName || "",
+    profilePicture: clerkUser?.imageUrl || "",
     resume: "",
     skills: [],
     experience: [
@@ -114,15 +123,18 @@ const UserRegistration = ({ clerkUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     console.log("Submitting form with data:", formData);
-
-    // Basic validation
+  
     if (!formData.name || !formData.email) {
-      alert("Name and Email are required fields.");
+      toast({
+        title: "Error",
+        description: "Name and Email are required fields.",
+        variant: "destructive",
+      });
       return;
     }
-
+  
     try {
       const response = await fetch("/api/register", {
         method: "POST",
@@ -131,154 +143,269 @@ const UserRegistration = ({ clerkUser }) => {
         },
         body: JSON.stringify(formData),
       });
-
+  
       if (!response.ok) {
         throw new Error("Registration failed");
       }
-
+  
       const data = await response.json();
       console.log("User registered successfully:", data);
-      alert("User registered successfully!");
+  
+      // Show success toast
+      toast({
+        title: "Success",
+        description: "User registered successfully!",
+        variant: "default",
+      });
+  
+      // Redirect to dashboard after short delay
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 2000); // 2-second delay to allow the toast to display
     } catch (error) {
       console.error("Error during user registration:", error.message);
-      alert("An error occurred during registration. Please try again.");
+      toast({
+        title: "Error",
+        description: "An error occurred during registration. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
   return (
-    <main className="flex h-screen items-center">
-      <form onSubmit={handleSubmit}>
-        {/* Skills Field */}
-        <div>
-          <label>Skills (comma separated):</label>
-          <input
-            type="text"
-            name="skills"
-            value={formData.skills.join(", ")}
-            onChange={(e) => handleArrayChange(e, "skills")}
-            placeholder="e.g., JavaScript, React, Node.js"
-          />
-        </div>
-
-        {/* Experience Fields */}
-        <div>
-          <h3>Experience</h3>
-          {formData.experience.map((exp, index) => (
-            <div key={index}>
-              <label>Company:</label>
-              <input
-                type="text"
-                value={exp.company}
-                onChange={(e) =>
-                  handleNestedChange(e, "experience", index, "company")
-                }
-                placeholder="Enter company name"
+    <main className="container space-y-6 px-12 pt-20 md:pt-28 pb-10">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-4xl font-bold gradient-title">
+          Set up your profile
+        </h1>
+      </div>
+      <form onSubmit={handleSubmit} className="space-y-8">
+        <Card>
+          <CardHeader></CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="skills">Skills (comma separated)</Label>
+              <Input
+                id="skills"
+                name="skills"
+                value={formData.skills.join(", ")}
+                onChange={(e) => handleArrayChange(e, "skills")}
+                placeholder="e.g., JavaScript, React, Node.js"
               />
-              <label>Role:</label>
-              <input
-                type="text"
-                value={exp.role}
-                onChange={(e) =>
-                  handleNestedChange(e, "experience", index, "role")
-                }
-                placeholder="Enter your role"
-              />
-              <label>Start Date:</label>
-              <input
-                type="date"
-                value={exp.startDate}
-                onChange={(e) =>
-                  handleNestedChange(e, "experience", index, "startDate")
-                }
-              />
-              <label>End Date:</label>
-              <input
-                type="date"
-                value={exp.endDate}
-                onChange={(e) =>
-                  handleNestedChange(e, "experience", index, "endDate")
-                }
-              />
-              <button type="button" onClick={() => removeExperience(index)}>
-                Remove
-              </button>
             </div>
-          ))}
-          <button type="button" onClick={addExperience}>
-            Add Experience
-          </button>
-        </div>
 
-        {/* Projects Fields */}
-        <div>
-          <h3>Projects</h3>
-          {formData.projects.map((project, index) => (
-            <div key={index}>
-              <label>Title:</label>
-              <input
-                type="text"
-                value={project.title}
-                onChange={(e) =>
-                  handleNestedChange(e, "projects", index, "title")
-                }
-                placeholder="Enter project title"
-              />
-              <label>Description:</label>
-              <input
-                type="text"
-                value={project.description}
-                onChange={(e) =>
-                  handleNestedChange(e, "projects", index, "description")
-                }
-                placeholder="Enter project description"
-              />
-              <label>Link:</label>
-              <input
-                type="text"
-                value={project.link}
-                onChange={(e) =>
-                  handleNestedChange(e, "projects", index, "link")
-                }
-                placeholder="Enter project link"
-              />
-              <button type="button" onClick={() => removeProject(index)}>
-                Remove
-              </button>
+            <Separator />
+
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold">Experience</h3>
+                <Button
+                  type="button"
+                  onClick={addExperience}
+                  variant="outline"
+                  size="sm"
+                >
+                  <PlusCircle className="w-4 h-4 mr-2" />
+                  Add Experience
+                </Button>
+              </div>
+              {formData.experience.map((exp, index) => (
+                <Card key={index}>
+                  <CardContent className="pt-6 space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor={`company-${index}`}>Company</Label>
+                        <Input
+                          id={`company-${index}`}
+                          value={exp.company}
+                          onChange={(e) =>
+                            handleNestedChange(
+                              e,
+                              "experience",
+                              index,
+                              "company"
+                            )
+                          }
+                          placeholder="Enter company name"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor={`role-${index}`}>Role</Label>
+                        <Input
+                          id={`role-${index}`}
+                          value={exp.role}
+                          onChange={(e) =>
+                            handleNestedChange(e, "experience", index, "role")
+                          }
+                          placeholder="Enter your role"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor={`startDate-${index}`}>Start Date</Label>
+                        <Input
+                          id={`startDate-${index}`}
+                          type="date"
+                          value={exp.startDate}
+                          onChange={(e) =>
+                            handleNestedChange(
+                              e,
+                              "experience",
+                              index,
+                              "startDate"
+                            )
+                          }
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor={`endDate-${index}`}>End Date</Label>
+                        <Input
+                          id={`endDate-${index}`}
+                          type="date"
+                          value={exp.endDate}
+                          onChange={(e) =>
+                            handleNestedChange(
+                              e,
+                              "experience",
+                              index,
+                              "endDate"
+                            )
+                          }
+                        />
+                      </div>
+                    </div>
+                    <Button
+                      type="button"
+                      onClick={() => removeExperience(index)}
+                      variant="destructive"
+                      size="sm"
+                    >
+                      <MinusCircle className="w-4 h-4 mr-2" />
+                      Remove
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
-          ))}
-          <button type="button" onClick={addProject}>
-            Add Project
-          </button>
-        </div>
 
-        {/* Preferences Fields */}
-        <div>
-          <h3>Preferences</h3>
-          <label>Job Type:</label>
-          <input
-            type="text"
-            value={formData.preferences.jobType}
-            onChange={(e) => handlePreferencesChange(e, "jobType")}
-            placeholder="Enter preferred job type"
-          />
-          <label>Preferred Industries (comma separated):</label>
-          <input
-            type="text"
-            value={formData.preferences.preferredIndustries.join(", ")}
-            onChange={(e) => handlePreferencesChange(e, "preferredIndustries")}
-            placeholder="e.g., Tech, Finance, Healthcare"
-          />
-          <label>Salary Expectation:</label>
-          <input
-            type="number"
-            value={formData.preferences.salaryExpectation || ""}
-            onChange={(e) => handlePreferencesChange(e, "salaryExpectation")}
-            placeholder="Enter salary expectation"
-          />
-        </div>
+            <Separator />
 
-        <button type="submit">Register</button>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold">Projects</h3>
+                <Button
+                  type="button"
+                  onClick={addProject}
+                  variant="outline"
+                  size="sm"
+                >
+                  <PlusCircle className="w-4 h-4 mr-2" />
+                  Add Project
+                </Button>
+              </div>
+              {formData.projects.map((project, index) => (
+                <Card key={index}>
+                  <CardContent className="pt-6 space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor={`projectTitle-${index}`}>Title</Label>
+                      <Input
+                        id={`projectTitle-${index}`}
+                        value={project.title}
+                        onChange={(e) =>
+                          handleNestedChange(e, "projects", index, "title")
+                        }
+                        placeholder="Enter project title"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor={`projectDescription-${index}`}>
+                        Description
+                      </Label>
+                      <Textarea
+                        id={`projectDescription-${index}`}
+                        value={project.description}
+                        onChange={(e) =>
+                          handleNestedChange(
+                            e,
+                            "projects",
+                            index,
+                            "description"
+                          )
+                        }
+                        placeholder="Enter project description"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor={`projectLink-${index}`}>Link</Label>
+                      <Input
+                        id={`projectLink-${index}`}
+                        value={project.link}
+                        onChange={(e) =>
+                          handleNestedChange(e, "projects", index, "link")
+                        }
+                        placeholder="Enter project link"
+                      />
+                    </div>
+                    <Button
+                      type="button"
+                      onClick={() => removeProject(index)}
+                      variant="destructive"
+                      size="sm"
+                    >
+                      <MinusCircle className="w-4 h-4 mr-2" />
+                      Remove
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <Separator />
+
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">Preferences</h3>
+              <div className="space-y-2">
+                <Label htmlFor="jobType">Job Preference (Remote / Hybrid / Onsite)</Label>
+                <Input
+                  id="jobType"
+                  value={formData.preferences.jobType}
+                  onChange={(e) => handlePreferencesChange(e, "jobType")}
+                  placeholder="Enter preferred job type"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="preferredIndustries">
+                  Preferred Industries (comma separated)
+                </Label>
+                <Input
+                  id="preferredIndustries"
+                  value={formData.preferences.preferredIndustries.join(", ")}
+                  onChange={(e) =>
+                    handlePreferencesChange(e, "preferredIndustries")
+                  }
+                  placeholder="e.g., Tech, Finance, Healthcare"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="salaryExpectation">Salary Expectation</Label>
+                <Input
+                  id="salaryExpectation"
+                  type="number"
+                  value={formData.preferences.salaryExpectation || ""}
+                  onChange={(e) =>
+                    handlePreferencesChange(e, "salaryExpectation")
+                  }
+                  placeholder="Enter salary expectation"
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Button type="submit" className="w-full">
+          Save
+        </Button>
       </form>
+     
     </main>
   );
 };
