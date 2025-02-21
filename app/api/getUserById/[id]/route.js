@@ -6,7 +6,7 @@ export async function GET(req, { params }) {
   try {
     await connectToDB();
 
-    const { id } = params; // Use params directly here
+    const { id } =await params; // Use params directly here
 
     console.log("User ID:", id);
 

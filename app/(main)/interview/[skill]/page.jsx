@@ -10,7 +10,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { Mic, Video, SkipForward, RefreshCw } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { Video, SkipForward, RefreshCw ,Sparkles, Target, BarChart2, Mic, Smile, MessageSquare} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 import Link from "next/link";
 
@@ -120,7 +122,7 @@ export default function Interview({ params }) {
       </p>
       <div className="flex gap-4">
         {/* Center: Live Interview Panel */}
-        <Card className="w-[60%]">
+        <Card className="w-[55%]">
           <CardHeader>
             <CardTitle>Live Interview</CardTitle>
           </CardHeader>
@@ -188,45 +190,89 @@ export default function Interview({ params }) {
         </Card>
 
         {/* Right: Feedback Panel */}
-        <Card className="w-[40%] ">
-          <CardHeader>
-            <CardTitle>Feedback</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {feedback ? (
-              <div className="h-80 overflow-y-auto space-y-2">
-                <p>
-                  <strong>Score:</strong> {feedback.score} / 100
-                </p>
-                <p>
-                  <strong>Strengths:</strong> {feedback.strengths}
-                </p>
-                <p>
-                  <strong>Areas for Improvement:</strong>{" "}
-                  {feedback.areasForImprovement}
-                </p>
-                <p>
-                  <strong>Feedback:</strong> {feedback.feedback}
-                </p>
-                <p>
-                  <strong>Speech Clarity Score:</strong>{" "}
-                  {feedback.speechClarityScore}/100
-                </p>
-                <p>
-                  <strong>Confidence Score:</strong> {feedback.confidenceScore}{" "}
-                  /100
-                </p>
-                <p>
-                  <strong>Tone Analysis:</strong> {feedback.toneAnalysis}
-                </p>
+        <Card className="w-[50%]">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Sparkles className="h-5 w-5 text-yellow-500" />
+          Feedback
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {feedback ? (
+          <div className="space-y-6 h-[calc(100vh-12rem)] overflow-y-auto pr-4">
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-sm font-medium">Overall Score</span>
+                <Badge variant={feedback.score >= 70 ? "success" : "destructive"}>{feedback.score}/100</Badge>
               </div>
-            ) : (
-              <p className="text-sm text-muted-foreground">
-                Complete the interview to see feedback.
-              </p>
-            )}
-          </CardContent>
-        </Card>
+              <Progress value={feedback.score} className="h-2" />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+                <div className="bg-muted p-3 rounded-lg">
+                  <h3 className="flex items-center gap-2 text-sm font-semibold mb-2">
+                    <Mic className="h-5 w-5 text-indigo-500" />
+                    Speech Clarity
+                  </h3>
+                  <div className="flex justify-between items-center">
+                    <Progress value={feedback.speechClarityScore} className="h-2 flex-grow mr-2" />
+                    <Badge variant={feedback.speechClarityScore >= 70 ? "success" : "destructive"}>{feedback.speechClarityScore}/100</Badge>
+                  </div>
+                </div>
+
+                <div className="bg-muted p-3 rounded-lg">
+                  <h3 className="flex items-center gap-2 text-sm font-semibold mb-2">
+                    <Smile className="h-5 w-5 text-orange-500" />
+                    Confidence
+                  </h3>
+                  <div className="flex justify-between items-center">
+                    <Progress value={feedback.confidenceScore} className="h-2 flex-grow mr-2" />
+                    <Badge variant={feedback.confidenceScore >= 70 ? "success" : "destructive"}>{feedback.confidenceScore}/100</Badge>
+                  </div>
+                </div>
+              </div>
+
+            <div className="space-y-4">
+              <div>
+                <h3 className="flex items-center gap-2 text-sm font-semibold mb-2">
+                  <Target className="h-5 w-5 text-green-500" />
+                  Strengths
+                </h3>
+                <p className="text-sm text-muted-foreground">{feedback.strengths}</p>
+              </div>
+
+              <div>
+                <h3 className="flex items-center gap-2 text-sm font-semibold mb-2">
+                  <BarChart2 className="h-5 w-5 text-blue-500" />
+                  Areas for Improvement
+                </h3>
+                <p className="text-sm text-muted-foreground">{feedback.areasForImprovement}</p>
+              </div>
+
+              <div>
+                <h3 className="flex items-center gap-2 text-sm font-semibold mb-2">
+                  <MessageSquare className="h-5 w-5 text-purple-500" />
+                  Detailed Feedback
+                </h3>
+                <p className="text-sm text-muted-foreground">{feedback.feedback}</p>
+              </div>
+
+             
+
+              {/* <div>
+                <h3 className="flex items-center gap-2 text-sm font-semibold mb-2">
+                  <MessageSquare className="h-5 w-5 text-teal-500" />
+                  Tone Analysis
+                </h3>
+                <p className="text-sm text-muted-foreground">{feedback.toneAnalysis}</p>
+              </div> */}
+            </div>
+          </div>
+        ) : (
+          <p className="text-sm text-muted-foreground text-center py-8">Complete the interview to see feedback.</p>
+        )}
+      </CardContent>
+    </Card>
       </div>
     </div>
   );
