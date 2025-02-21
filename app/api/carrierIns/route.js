@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import Groq from "groq-sdk";
+import { connectToDB } from "../../db/connection";
+import { Career } from "../../db/models/Career";
 
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
@@ -8,13 +10,21 @@ const groq = new Groq({
 export async function POST(req) {
   try {
     const body = await req.json();
-    const skills = body?.skills;
+    const { skills, clerkId } = body; // Extract `clerkId`
 
     console.log("Skills:", skills);
+    console.log("Clerk ID:", clerkId);
 
     if (!skills || !Array.isArray(skills) || skills.length === 0) {
       return NextResponse.json(
         { error: "Missing or invalid 'skills' in request body." },
+        { status: 400 }
+      );
+    }
+
+    if (!clerkId || typeof clerkId !== "string") {
+      return NextResponse.json(
+        { error: "Missing or invalid 'clerkId' in request body." },
         { status: 400 }
       );
     }
@@ -27,6 +37,14 @@ export async function POST(req) {
       {
         "recommendedSkills": ["string"],
         "industryTrends": ["string"],
+        "salaryData": [
+          {  
+            "name": "string",
+            "min": "number",
+            "median": "number",
+            "max": "number"
+          }
+        ],
         "suggestedCourses": [
           {
             "title": "string",
@@ -34,13 +52,7 @@ export async function POST(req) {
             "link": "string"
           }
         ]
-      }
-      
-      **Important Rules:**
-      1. Do NOT return any Markdown or code formatting.
-      2. Provide at least 5 recommended skills.
-      3. Provide at least 3 industry trends.
-      4. Provide at least 3 suggested courses.`;
+      }`;
 
       const chatCompletion = await groq.chat.completions.create({
         messages: [
@@ -61,7 +73,6 @@ export async function POST(req) {
       });
 
       let aiResponse = chatCompletion.choices[0].message.content.trim();
-
       let cleanedResponse = aiResponse.replace(/^```json\s*|```$/g, "").trim();
 
       return cleanedResponse;
@@ -77,9 +88,18 @@ export async function POST(req) {
     }
 
     let careerObject;
-
     try {
       careerObject = JSON.parse(careerData);
+
+      // 🔹 Convert salary values to numbers
+      if (Array.isArray(careerObject.salaryData)) {
+        careerObject.salaryData = careerObject.salaryData.map((item) => ({
+          name: item.name,
+          min: parseFloat(item.min) || 0,
+          median: parseFloat(item.median) || 0,
+          max: parseFloat(item.max) || 0,
+        }));
+      }
     } catch (error) {
       console.error("Invalid JSON received:", careerData);
       return NextResponse.json(
@@ -88,7 +108,15 @@ export async function POST(req) {
       );
     }
 
-    return NextResponse.json(careerObject);
+    // 🔹 Connect to the database
+    await connectToDB();
+
+    // 🔹 Save career prediction to the database
+    const career = new Career({ clerkId, ...careerObject });
+    const savedCareer = await career.save();
+    console.log("Saved Career:", savedCareer);
+
+    return NextResponse.json(savedCareer);
   } catch (err) {
     console.error("Error invoking Groq:", err);
     return NextResponse.json(
