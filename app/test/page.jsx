@@ -7,7 +7,8 @@ export default function page() {
   return (
     <>
       <main className="flex h-screen items-center justify-center">
-        <CheckUser />
+        {/* <CheckUser /> */}
+        <Resume/>
       </main>
     </>
   );

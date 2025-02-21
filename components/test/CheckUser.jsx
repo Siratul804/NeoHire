@@ -22,9 +22,9 @@ export default function UserProfile() {
       return;
     }
 
-    if (!showRegistration) {
-      router.push(`/dashboard`);
-    }
+    // if (!showRegistration) {
+    //   router.push(`/dashboard`);
+    // }
 
     const fetchUser = async () => {
       try {
