@@ -188,36 +188,36 @@ export default function Profile() {
 
           {/* Projects Section */}
           <Card>
-  <CardHeader>
-    <div className="flex items-center justify-between w-full">
-      <CardTitle>Projects</CardTitle>
-      <Button size="sm" variant="outline">
-        <Plus className="h-4 w-4 mr-2" />
-        Add Project
-      </Button>
-    </div>
-  </CardHeader>
+            <CardHeader>
+              <div className="flex items-center justify-between w-full">
+                <CardTitle>Projects</CardTitle>
+                <Button size="sm" variant="outline">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Project
+                </Button>
+              </div>
+            </CardHeader>
 
-  <CardContent>
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {projects.map((project, index) => (
-        <Card key={index} className="p-4 shadow-md">
-          <h3 className="font-bold text-lg">{project.title}</h3>
-          <p className="text-sm text-muted-foreground my-2">
-            {project.description}
-          </p>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {projects.map((project, index) => (
+                  <Card key={index} className="p-4 shadow-md">
+                    <h3 className="font-bold text-lg">{project.title}</h3>
+                    <p className="text-sm text-muted-foreground my-2">
+                      {project.description}
+                    </p>
 
-          {/* Uncomment if you want the view project button */}
-          {/* <Button asChild size="sm" variant="outline">
+                    {/* Uncomment if you want the view project button */}
+                    {/* <Button asChild size="sm" variant="outline">
             <a href={project.link} target="_blank" rel="noopener noreferrer">
               View Project
             </a>
           </Button> */}
-        </Card>
-      ))}
-    </div>
-  </CardContent>
-</Card>
+                  </Card>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
