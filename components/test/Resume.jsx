@@ -51,7 +51,7 @@ const PDFUploader = () => {
       const result = await response.json();
       if (response.ok) {
         setUploadStatus("File uploaded and processed successfully!");
-        setParsedData(result.parsedText);
+        setParsedData(result.resumeData);
       } else {
         setUploadStatus(result.error || "Failed to process file.");
       }
@@ -64,19 +64,23 @@ const PDFUploader = () => {
   };
 
   return (
-    <div>
+    <div >
       <h2>PDF Uploader</h2>
       <input type="file" accept="application/pdf" onChange={handleFileChange} />
       <button onClick={handleUpload} disabled={!file || loading}>
         {loading ? "Processing..." : "Upload PDF"}
       </button>
       {uploadStatus && <p>{uploadStatus}</p>}
+      <div>
+
+     
       {parsedData && (
-        <div>
+        <div className="pt-[1200px] pl-[900px] w-[40%]">
           <h3>Extracted Resume Data:</h3>
           <pre>{JSON.stringify(parsedData, null, 2)}</pre>
         </div>
       )}
+      </div>
     </div>
   );
 };
