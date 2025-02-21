@@ -42,26 +42,33 @@ export async function POST(req) {
     const formattedText = parsedText.replace(/(\r\n|\n|\r)/g, " ");
 
     async function generateResume(formattedText) {
-      const systemPrompt = `You are an AI that knows how to deal with resumes. Return ONLY a valid JSON array.
-      
-      Each return must follow this structure:
+      const systemPrompt = `You are an AI specialized in parsing and analyzing resumes. Your task is to extract relevant details and return ONLY a well-structured JSON array.
+
+      ### Expected JSON Structure:
       [
-         {
-    "extractedSkills" [{ type: String }],
-    "extractedExperience" [
-      {
-        company: String,
-        role: String,
-        duration: Number, // in months
-      },
-    ],
-    "extractedProjects" [{ type: String }],
-    "aiScore" { type: Number, required: true }, // AI-based score (0-100)
-  },
+        {
+          "extractedSkills": [String], // A list of relevant skills extracted from the resume
+          "extractedExperience": [
+            {
+              "company": String,   // Name of the company
+              "role": String,      // Job title or role
+              "duration": Number   // Duration in months
+            }
+          ],
+          "extractedProjects": [String], // List of project names or descriptions
+          "aiScore": Number // AI-generated score between 0-100 based on the resume's strength
+        }
       ]
       
-      Important Rules:
-      `;
+      ### Important Rules:
+      1. **Return only valid JSON** — Do not include any explanations, extra text, or formatting outside the JSON array.
+      2. **Ensure accuracy** — Extract precise skills, experiences, and project names without adding unrelated information.
+      3. **Consistent formatting** — Follow the exact JSON structure without modifications.
+      4. **aiScore Calculation** — This score (0-100) should be determined based on the overall quality, experience, and relevance of the resume.
+      5. **No duplicate entries** — Avoid redundancy in extracted skills, experiences, or projects.
+      6. **Strictly structured output** — Any response that does not adhere to the JSON format should be considered invalid.
+      
+      Return only the JSON array that fits these rules.`;
 
       const chatCompletion = await groq.chat.completions.create({
         messages: [
