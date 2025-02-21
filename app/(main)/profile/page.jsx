@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,12 +26,12 @@ import Link from "next/link";
 
 export default function Profile() {
   const { user } = useUser();
-  const [skills, setSkills] = React.useState([
-    "React",
-    "TypeScript",
-    "Node.js",
-  ]);
-  const [newSkill, setNewSkill] = React.useState("");
+
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [skills, setSkills] = useState([]);
+  const [newSkill, setNewSkill] = useState("");
 
   const handleAddSkill = () => {
     if (newSkill.trim()) {
@@ -40,28 +40,27 @@ export default function Profile() {
     }
   };
 
-  const removeSkill = (skillToRemove) => {
-    setSkills(skills.filter((skill) => skill !== skillToRemove));
-  };
+  useEffect(() => {
+    if (!user?.id) return;
 
-  // Dummy project data
-  const projects = [
-    {
-      title: "Project Alpha",
-      description: "A revolutionary app for task management.",
-      link: "#",
-    },
-    {
-      title: "Project Beta",
-      description: "An advanced AI-powered chatbot system.",
-      link: "#",
-    },
-    {
-      title: "Project Gamma",
-      description: "A responsive e-commerce platform with real-time updates.",
-      link: "#",
-    },
-  ];
+    const fetchUserData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`/api/getUserById/${user.id}`);
+        if (!response.ok) throw new Error("User data not found");
+
+        const data = await response.json();
+        console.log(data);
+        setUserData(data.user_data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [user?.id]);
 
   return (
     <div className="container px-12 pt-20 md:pt-28 pb-10">
@@ -70,7 +69,7 @@ export default function Profile() {
           ← Back to Dashboard
         </Link>
       </div>
-      <div className="flex  gap-4">
+      <div className="flex gap-4">
         {/* Left Side - Profile Section */}
         <div className="w-[30%] space-y-4">
           <div className="flex flex-col items-center">
@@ -104,7 +103,7 @@ export default function Profile() {
                 <Input
                   id="email"
                   defaultValue={
-                    user?.emailAddresses[0]?.emailAddress ||
+                    user?.emailAddresses?.[0]?.emailAddress ||
                     "john.doe@example.com"
                   }
                   disabled
@@ -114,7 +113,7 @@ export default function Profile() {
                 <Label htmlFor="jobType">Job Type</Label>
                 <Select>
                   <SelectTrigger id="jobType">
-                    <SelectValue placeholder="Select job type" />
+                    <SelectValue placeholder="Select Job Type" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="remote">Remote</SelectItem>
@@ -136,17 +135,29 @@ export default function Profile() {
               </CardHeader>
               <CardContent>
                 <Accordion type="single" collapsible>
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger>
-                      <div className="text-left">
-                        <div className="font-bold">Acme Inc.</div>
-                        <div className="text-sm text-muted-foreground italic">
-                          Senior Developer
+                  {userData?.experience?.map((val, index) => (
+                    <AccordionItem key={index} value={`item-${index}`}>
+                      <AccordionTrigger>
+                        <div className="text-left">
+                          <div className="font-bold">{val.company}</div>
+                          <div className="text-sm text-muted-foreground italic">
+                            {val.role}
+                          </div>
                         </div>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent>Jan 2020 → Present</AccordionContent>
-                  </AccordionItem>
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        {new Date(val.startDate).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                        })}
+                        <span> {`->`} </span>
+                        {new Date(val.endDate).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                        })}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
                 </Accordion>
               </CardContent>
             </Card>
@@ -158,14 +169,16 @@ export default function Profile() {
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {skills.map((skill, index) => (
+                  {userData?.skills.map((skill, index) => (
                     <Badge key={index} variant="secondary">
                       {skill}
                       <Button
                         size="sm"
                         variant="ghost"
                         className="ml-2 h-4 w-4 p-0"
-                        onClick={() => removeSkill(skill)}
+                        onClick={() =>
+                          setSkills(skills.filter((_, i) => i !== index))
+                        }
                       >
                         <X className="h-3 w-3" />
                       </Button>
@@ -200,19 +213,12 @@ export default function Profile() {
 
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {projects.map((project, index) => (
+                {userData?.projects?.map((project, index) => (
                   <Card key={index} className="p-4 shadow-md">
                     <h3 className="font-bold text-lg">{project.title}</h3>
                     <p className="text-sm text-muted-foreground my-2">
                       {project.description}
                     </p>
-
-                    {/* Uncomment if you want the view project button */}
-                    {/* <Button asChild size="sm" variant="outline">
-            <a href={project.link} target="_blank" rel="noopener noreferrer">
-              View Project
-            </a>
-          </Button> */}
                   </Card>
                 ))}
               </div>
