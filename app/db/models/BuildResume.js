@@ -10,7 +10,7 @@ const buildResumeSchema = new mongoose.Schema(
       linkedin: { type: String },
       github: { type: String },
     },
-    summary: { type: String, required: true },
+    description: { type: String, required: true },
     skills: { type: String, required: true },
     experience: [
       {

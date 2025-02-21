@@ -1,11 +1,11 @@
-import React from 'react'
+import BuildResume from "@/components/BuildResume";
 
-const BuildResume = () => {
+const page = () => {
   return (
-    <div>
-      build resume
-    </div>
-  )
-}
+    <>
+      <BuildResume />
+    </>
+  );
+};
 
-export default BuildResume
+export default BuildResume;
