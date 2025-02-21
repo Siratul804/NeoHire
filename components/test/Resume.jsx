@@ -5,6 +5,8 @@ const PDFUploader = () => {
   const [file, setFile] = useState(null);
   const [base64String, setBase64String] = useState("");
   const [uploadStatus, setUploadStatus] = useState("");
+  const [parsedData, setParsedData] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -33,6 +35,10 @@ const PDFUploader = () => {
       return;
     }
 
+    setLoading(true);
+    setUploadStatus("Uploading and processing...");
+    setParsedData(null);
+
     try {
       const response = await fetch("/api/resume", {
         method: "POST",
@@ -42,14 +48,18 @@ const PDFUploader = () => {
         body: JSON.stringify({ file: base64String }),
       });
 
+      const result = await response.json();
       if (response.ok) {
-        setUploadStatus("File uploaded successfully!");
+        setUploadStatus("File uploaded and processed successfully!");
+        setParsedData(result.parsedText);
       } else {
-        setUploadStatus("Failed to upload file.");
+        setUploadStatus(result.error || "Failed to process file.");
       }
     } catch (error) {
       console.error("Error uploading file:", error);
       setUploadStatus("Error uploading file.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,10 +67,16 @@ const PDFUploader = () => {
     <div>
       <h2>PDF Uploader</h2>
       <input type="file" accept="application/pdf" onChange={handleFileChange} />
-      <button onClick={handleUpload} disabled={!file}>
-        Upload PDF
+      <button onClick={handleUpload} disabled={!file || loading}>
+        {loading ? "Processing..." : "Upload PDF"}
       </button>
       {uploadStatus && <p>{uploadStatus}</p>}
+      {parsedData && (
+        <div>
+          <h3>Extracted Resume Data:</h3>
+          <pre>{JSON.stringify(parsedData, null, 2)}</pre>
+        </div>
+      )}
     </div>
   );
 };
