@@ -1,3 +1,4 @@
+import Footer from "@/components/footer";
 import HeroSection from "@/components/hero";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -98,6 +99,9 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* footer */}
+      <Footer/>
     </>
   );
 }
