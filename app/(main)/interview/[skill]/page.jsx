@@ -2,12 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -187,15 +182,15 @@ export default function Interview({ params }) {
             <Button onClick={toggleTimer}>
               {timerRunning ? (
                 <>
-                  <Pause className="mr-1 h-4 w-4" /> 
+                  <Pause className="mr-1 h-4 w-4" />
                 </>
               ) : (
                 <>
                   <Play className="mr-1 h-4 w-4" />
                 </>
               )}
-            
-            <span className="text-lg font-mono">{formatTime(timeLeft)}</span>
+
+              <span className="text-lg font-mono">{formatTime(timeLeft)}</span>
             </Button>
           </>
         ) : (
@@ -253,7 +248,10 @@ export default function Interview({ params }) {
                     </Button>
                   </div>
                   {currentQuestionIndex < questions.length - 1 ? (
-                    <Button onClick={handleNextQuestion} disabled={timeLeft === 0}>
+                    <Button
+                      onClick={handleNextQuestion}
+                      disabled={timeLeft === 0}
+                    >
                       <SkipForward className="mr-2 h-4 w-4" /> Next Question
                     </Button>
                   ) : (
@@ -279,7 +277,7 @@ export default function Interview({ params }) {
         </Card>
 
         {/* Right: Feedback Panel */}
-        <Card className="w-[50%]">
+        <Card className="w-[50%] h-[55vh] overflow-y-auto ">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Sparkles className="h-5 w-5 text-yellow-500" />
@@ -292,7 +290,9 @@ export default function Interview({ params }) {
                 <div>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm font-medium">Overall Score</span>
-                    <Badge variant={feedback.score >= 70 ? "success" : "destructive"}>
+                    <Badge
+                      variant={feedback.score >= 70 ? "success" : "destructive"}
+                    >
                       {feedback.score}/100
                     </Badge>
                   </div>
@@ -306,8 +306,17 @@ export default function Interview({ params }) {
                       Speech Clarity
                     </h3>
                     <div className="flex justify-between items-center">
-                      <Progress value={feedback.speechClarityScore} className="h-2 flex-grow mr-2" />
-                      <Badge variant={feedback.speechClarityScore >= 70 ? "success" : "destructive"}>
+                      <Progress
+                        value={feedback.speechClarityScore}
+                        className="h-2 flex-grow mr-2"
+                      />
+                      <Badge
+                        variant={
+                          feedback.speechClarityScore >= 70
+                            ? "success"
+                            : "destructive"
+                        }
+                      >
                         {feedback.speechClarityScore}/100
                       </Badge>
                     </div>
@@ -319,8 +328,17 @@ export default function Interview({ params }) {
                       Confidence
                     </h3>
                     <div className="flex justify-between items-center">
-                      <Progress value={feedback.confidenceScore} className="h-2 flex-grow mr-2" />
-                      <Badge variant={feedback.confidenceScore >= 70 ? "success" : "destructive"}>
+                      <Progress
+                        value={feedback.confidenceScore}
+                        className="h-2 flex-grow mr-2"
+                      />
+                      <Badge
+                        variant={
+                          feedback.confidenceScore >= 70
+                            ? "success"
+                            : "destructive"
+                        }
+                      >
                         {feedback.confidenceScore}/100
                       </Badge>
                     </div>
@@ -333,7 +351,9 @@ export default function Interview({ params }) {
                       <Target className="h-5 w-5 text-green-500" />
                       Strengths
                     </h3>
-                    <p className="text-sm text-muted-foreground">{feedback.strengths}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {feedback.strengths}
+                    </p>
                   </div>
 
                   <div>
@@ -341,7 +361,9 @@ export default function Interview({ params }) {
                       <BarChart2 className="h-5 w-5 text-blue-500" />
                       Areas for Improvement
                     </h3>
-                    <p className="text-sm text-muted-foreground">{feedback.areasForImprovement}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {feedback.areasForImprovement}
+                    </p>
                   </div>
 
                   <div>
@@ -349,7 +371,9 @@ export default function Interview({ params }) {
                       <MessageSquare className="h-5 w-5 text-purple-500" />
                       Detailed Feedback
                     </h3>
-                    <p className="text-sm text-muted-foreground">{feedback.feedback}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {feedback.feedback}
+                    </p>
                   </div>
                 </div>
               </div>
