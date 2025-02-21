@@ -113,7 +113,7 @@ export default function Profile() {
                 <Label htmlFor="jobType">Job Type</Label>
                 <Select>
                   <SelectTrigger id="jobType">
-                    <SelectValue placeholder="Select Job Type" />
+                    <SelectValue placeholder={userData?.preferences?.jobType} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="remote">Remote</SelectItem>
