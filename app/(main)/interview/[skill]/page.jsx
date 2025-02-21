@@ -2,9 +2,16 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { Mic, Video, SkipForward } from "lucide-react";
+import { Mic, Video, SkipForward, RefreshCw } from "lucide-react";
+
 import Link from "next/link";
 
 export default function Interview({ params }) {
@@ -159,9 +166,18 @@ export default function Interview({ params }) {
                       <SkipForward className="mr-2 h-4 w-4" /> Next Question
                     </Button>
                   ) : (
-                    <Button onClick={handleSubmit} disabled={submitting}>
-                      {submitting ? "Submitting..." : "Submit"}
-                    </Button>
+                    <div className="flex ">
+                      <Button onClick={() => window.location.reload()}>
+                        Again <RefreshCw className="mr-2 h-4 w-4" />
+                      </Button>
+                      <Button
+                        onClick={handleSubmit}
+                        disabled={submitting}
+                        className="ml-4"
+                      >
+                        {submitting ? "Submitting..." : "Submit"}
+                      </Button>
+                    </div>
                   )}
                 </div>
               </>
@@ -172,13 +188,13 @@ export default function Interview({ params }) {
         </Card>
 
         {/* Right: Feedback Panel */}
-        <Card className="w-[40%]">
+        <Card className="w-[40%] ">
           <CardHeader>
             <CardTitle>Feedback</CardTitle>
           </CardHeader>
           <CardContent>
             {feedback ? (
-              <div className="space-y-2">
+              <div className="h-80 overflow-y-auto space-y-2">
                 <p>
                   <strong>Score:</strong> {feedback.score} / 100
                 </p>
@@ -197,7 +213,7 @@ export default function Interview({ params }) {
                   {feedback.speechClarityScore}/100
                 </p>
                 <p>
-                  <strong>Confidence Score:</strong> {feedback.confidenceScore}
+                  <strong>Confidence Score:</strong> {feedback.confidenceScore}{" "}
                   /100
                 </p>
                 <p>
