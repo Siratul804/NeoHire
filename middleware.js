@@ -3,12 +3,11 @@ import { NextResponse } from "next/server";
 
 const isProtectedRoute = createRouteMatcher([
   "/dashboard(.*)",
-  "/career-insights(.*)",
   "/interview(.*)",
+  "/career-insights(.*)",
   "/jobs(.*)",
   "/resume(.*)",
   "/profile(.*)",
-  "/main(.*)",
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
@@ -20,7 +19,7 @@ export default clerkMiddleware(async (auth, req) => {
   }
 
   if (userId && url.pathname === "/") {
-    return NextResponse.redirect(new URL("/main", req.url));
+    return NextResponse.redirect(new URL("/setup_profile", req.url));
   }
 
   return NextResponse.next();

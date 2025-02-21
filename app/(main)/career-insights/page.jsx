@@ -76,6 +76,7 @@ const CareerInsights = () => {
         if (!response.ok) throw new Error("Career data not found");
 
         const data = await response.json();
+        console.log(data);
         setCarrierData(data.carrer_data);
       } catch (err) {
         setError(err.message);
