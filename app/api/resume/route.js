@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
 import { PdfReader } from "pdfreader";
-import fs from "fs";
+import fs from "fs/promises"; // Use fs.promises for async operations
 import path from "path";
-
+import os from "os";
 import Groq from "groq-sdk";
 
-// Initialize Groq SDK with API key
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
 });
@@ -15,30 +14,31 @@ export async function POST(req) {
     const body = await req.json();
     const { file } = body;
 
-    // Decode the base64 string
     const base64Data = file.replace(/^data:application\/pdf;base64,/, "");
     const buffer = Buffer.from(base64Data, "base64");
+    const tempDir = os.tmpdir();
+    const tempFilePath = path.join(tempDir, "temp-file.pdf");
 
-    // Save the decoded buffer to a temporary file
-    const tempFilePath = path.join("/tmp", "temp-file.pdf");
-    fs.writeFileSync(tempFilePath, buffer);
+    // Write file asynchronously
+    await fs.writeFile(tempFilePath, buffer);
 
-    // Return a promise that resolves when the PDF is parsed
+    // Parse PDF asynchronously
     const parsedText = await new Promise((resolve, reject) => {
       let fullText = "";
-
       new PdfReader().parseFileItems(tempFilePath, (err, item) => {
         if (err) {
           reject("Error during PDF parsing: " + err);
         } else if (!item) {
-          resolve(fullText); // Resolve with the accumulated text once parsing is done
+          resolve(fullText);
         } else if (item.text) {
-          fullText += item.text; // Accumulate text
+          fullText += item.text;
         }
       });
     });
 
-    // Format the text by removing line breaks and joining the text
+    // Delete file asynchronously
+    await fs.unlink(tempFilePath);
+
     const formattedText = parsedText.replace(/(\r\n|\n|\r)/g, " ");
 
     async function generateResume(formattedText) {
@@ -47,27 +47,25 @@ export async function POST(req) {
       ### Expected JSON Structure:
       [
         {
-          "extractedSkills": [String], // A list of relevant skills extracted from the resume
+          "extractedSkills": [String],
           "extractedExperience": [
             {
-              "company": String,   // Name of the company
-              "role": String,      // Job title or role
-              "duration": Number   // Duration in years
+              "company": String,
+              "role": String,
+              "duration": Number
             }
           ],
-          "extractedProjects": [String], // List of project names or descriptions
-          "aiScore": Number // AI-generated score between 0-100 based on the resume's strength
+          "extractedProjects": [String],
+          "aiScore": Number
         }
       ]
-      
+
       ### Important Rules:
-      1. **Return only valid JSON** — Do not include any explanations, extra text, or formatting outside the JSON array.
-      2. **Ensure accuracy** — Extract precise skills, experiences, and project names without adding unrelated information.
-      3. **Consistent formatting** — Follow the exact JSON structure without modifications.
-      4. **aiScore Calculation** — This score (0-100) should be determined based on the overall quality, experience, and relevance of the resume.
-      5. **No duplicate entries** — Avoid redundancy in extracted skills, experiences, or projects.
-      6. **Strictly structured output** — Any response that does not adhere to the JSON format should be considered invalid.
-      
+      1. **Return only valid JSON** without any explanations or extra text.
+      2. **Ensure accuracy** and avoid unrelated information.
+      3. **Consistent formatting** and **no duplicate entries**.
+      4. **Strict JSON output** — Any invalid response should be rejected.
+
       Return only the JSON array that fits these rules.`;
 
       const chatCompletion = await groq.chat.completions.create({
@@ -75,30 +73,20 @@ export async function POST(req) {
           { role: "system", content: systemPrompt },
           {
             role: "user",
-            content: `Generate information based on : ${formattedText}`,
+            content: `Generate information based on: ${formattedText}`,
           },
         ],
         model: "llama-3.3-70b-versatile",
         temperature: 0.7,
         max_tokens: 1000,
-        top_p: 0.8,
-        stream: false,
-        stop: null,
       });
 
       let aiResponse = chatCompletion.choices[0].message.content.trim();
-
-      // 🔹 Remove possible Markdown formatting (` ```json ... ``` `)
       let cleanedResponse = aiResponse.replace(/^```json\s*|```$/g, "").trim();
-
-      // console.log("Raw AI Response:", aiResponse);
-      // console.log("Cleaned AI Response:", cleanedResponse);
-
       return cleanedResponse;
     }
 
-    const aiResume = await generateResume(formattedText); // Changed from `tag` to `formattedText`
-
+    const aiResume = await generateResume(formattedText);
     if (!aiResume) {
       return NextResponse.json(
         { error: "Failed to generate resume." },
@@ -107,12 +95,8 @@ export async function POST(req) {
     }
 
     let resumeObject;
-
-    // 🔹 Validate and Parse JSON
     try {
       resumeObject = JSON.parse(aiResume);
-
-      // Ensure the response is an array of objects (no fixed length requirement)
       if (!Array.isArray(resumeObject) || resumeObject.length === 0) {
         throw new Error("Invalid resume structure");
       }
@@ -124,9 +108,6 @@ export async function POST(req) {
       );
     }
 
-    console.log(resumeObject);
-
-    // Return a success response with the formatted text
     return NextResponse.json(
       { message: "Resume Parser Done.", parsedText: resumeObject },
       { status: 201 }
