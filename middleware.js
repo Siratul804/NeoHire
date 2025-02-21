@@ -8,6 +8,7 @@ const isProtectedRoute = createRouteMatcher([
   "/jobs(.*)",
   "/resume(.*)",
   "/profile(.*)",
+  "/main(.*)",
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
@@ -19,7 +20,7 @@ export default clerkMiddleware(async (auth, req) => {
   }
 
   if (userId && url.pathname === "/") {
-    return NextResponse.redirect(new URL("/dashboard", req.url));
+    return NextResponse.redirect(new URL("/main", req.url));
   }
 
   return NextResponse.next();

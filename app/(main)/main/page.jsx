@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
-import UserRegistration from "../UserRegistration"; // Import the registration form
+import UserRegistration from "../../../components/UserRegistration"; // Import the registration form
 import { useRouter } from "next/navigation"; // Updated import for useRouter
 
 export default function UserProfile() {
@@ -20,10 +20,6 @@ export default function UserProfile() {
       setError("User ID is required.");
       setLoading(false);
       return;
-    }
-
-    if (!showRegistration) {
-      router.push(`/dashboard`);
     }
 
     const fetchUser = async () => {
@@ -52,19 +48,20 @@ export default function UserProfile() {
     fetchUser();
   }, [clerkUser, isLoaded]);
 
+  // Redirect to dashboard when user data is available
+  useEffect(() => {
+    if (userData) {
+      router.push("/dashboard");
+    }
+  }, [userData, router]);
+
   if (!isLoaded) return <p>Loading Clerk user...</p>;
   if (loading) return <p>Loading user data...</p>;
   if (error) return <p>Error: {error}</p>;
 
-  // Show registration form if user is not found
   if (showRegistration) {
     return <UserRegistration clerkUser={clerkUser} />;
   }
 
-  // Ensure userData is defined before accessing its properties
-  if (!userData) {
-    return <p>No user data available.</p>;
-  }
-
-  return <></>;
+  return <p>Redirecting to dashboard...</p>;
 }
