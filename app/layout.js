@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/components/Theme-Provider";
 import { dark } from "@clerk/themes";
-import Footer from "@/components/footer";
+
 import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
             <Navbar />
             <main className="min-h-screen">{children}</main>
             <Toaster richColors />
-            <Footer/>
+            
           </ClerkProvider>
         </ThemeProvider>
       </body>
