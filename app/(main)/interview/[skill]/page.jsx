@@ -1,7 +1,6 @@
-// app/interview/[skill]/page.js
 "use client";
 
-import React, { useState, useEffect } from "react"; // Import React and useEffect
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,40 +9,38 @@ import Link from "next/link";
 
 export default function Interview({ params }) {
   const { skill } = React.use(params); // Extract the skill from params
-  const [questions, setQuestions] = useState([]); // State to store questions
+  const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState([]); // Initialize answers as an empty array
+  const [answers, setAnswers] = useState([]);
   const [fileUploaded, setFileUploaded] = useState(false);
-  const [loading, setLoading] = useState(true); // State to handle loading
-  const [error, setError] = useState(null); // State to handle errors
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [feedback, setFeedback] = useState(null); // New state for feedback
+  const [submitting, setSubmitting] = useState(false); // State to track submission status
 
-  // Fetch questions from the backend API
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
         const response = await fetch("/api/interview/ai-qn", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ tag: skill }),
         });
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch questions");
-        }
+        if (!response.ok) throw new Error("Failed to fetch questions");
+
         const data = await response.json();
-        setQuestions(data); // Set the fetched questions
-        setAnswers(Array(data.length).fill("")); // Initialize answers array
+        setQuestions(data);
+        setAnswers(Array(data.length).fill("")); // Initialize empty answers array
       } catch (error) {
-        setError(error.message); // Set error message
+        setError(error.message);
       } finally {
-        setLoading(false); // Set loading to false
+        setLoading(false);
       }
     };
 
     fetchQuestions();
-  }, [skill]); // Run effect when skill changes
+  }, [skill]);
 
   const handleNextQuestion = () => {
     if (currentQuestionIndex < questions.length - 1) {
@@ -67,16 +64,34 @@ export default function Interview({ params }) {
     document.getElementById("fileUpload").click();
   };
 
-  const handleSubmit = () => {
-    console.log("Submitted Answers:", answers);
-    alert("Interview submitted successfully!");
-    setFileUploaded(false); // Reset file upload state after submission
+  const handleSubmit = async () => {
+    setSubmitting(true);
+    try {
+      const response = await fetch("/api/interview/ai-feed", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ questions, answers }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit answers");
+      }
+
+      const result = await response.json();
+      console.log(result);
+      setFeedback(result); // Store received feedback in state
+    } catch (error) {
+      console.error("Error submitting answers:", error);
+      setError("Failed to fetch feedback. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (loading) {
     return (
       <div className="container px-12 pt-20">
-        NeoHire Ai is generating question...
+        NeoHire AI is generating questions...
       </div>
     );
   }
@@ -144,7 +159,9 @@ export default function Interview({ params }) {
                       <SkipForward className="mr-2 h-4 w-4" /> Next Question
                     </Button>
                   ) : (
-                    <Button onClick={handleSubmit}>Submit</Button>
+                    <Button onClick={handleSubmit} disabled={submitting}>
+                      {submitting ? "Submitting..." : "Submit"}
+                    </Button>
                   )}
                 </div>
               </>
@@ -160,9 +177,38 @@ export default function Interview({ params }) {
             <CardTitle>Feedback</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Complete the interview to see feedback.
-            </p>
+            {feedback ? (
+              <div className="space-y-2">
+                <p>
+                  <strong>Score:</strong> {feedback.score} / 100
+                </p>
+                <p>
+                  <strong>Strengths:</strong> {feedback.strengths}
+                </p>
+                <p>
+                  <strong>Areas for Improvement:</strong>{" "}
+                  {feedback.areasForImprovement}
+                </p>
+                <p>
+                  <strong>Feedback:</strong> {feedback.feedback}
+                </p>
+                <p>
+                  <strong>Speech Clarity Score:</strong>{" "}
+                  {feedback.speechClarityScore}/100
+                </p>
+                <p>
+                  <strong>Confidence Score:</strong> {feedback.confidenceScore}
+                  /100
+                </p>
+                <p>
+                  <strong>Tone Analysis:</strong> {feedback.toneAnalysis}
+                </p>
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                Complete the interview to see feedback.
+              </p>
+            )}
           </CardContent>
         </Card>
       </div>
