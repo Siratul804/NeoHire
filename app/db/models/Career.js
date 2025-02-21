@@ -6,13 +6,13 @@ const careerPredictionSchema = new mongoose.Schema(
     suggestedCourses: [
       {
         title: String,
-        provider: String,
+        provider: String, //model
         link: String,
       },
     ],
   },
   { timestamps: true }
 );
-
+s;
 export const Career =
   mongoose.models.Career || mongoose.model("Career", careerPredictionSchema);
