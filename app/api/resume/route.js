@@ -52,7 +52,7 @@ export async function POST(req) {
             {
               "company": String,   // Name of the company
               "role": String,      // Job title or role
-              "duration": Number   // Duration in months
+              "duration": Number   // Duration in years
             }
           ],
           "extractedProjects": [String], // List of project names or descriptions
