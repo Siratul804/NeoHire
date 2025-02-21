@@ -36,7 +36,7 @@ export async function POST(req) {
       The JSON structure must be:
       {
         "recommendedSkills": ["string"],
-        "industryTrends": ["string"],
+        "industryTrends": ["string"], //give 3 industryTrends
         "salaryData": [
           {  
             "name": "string",
