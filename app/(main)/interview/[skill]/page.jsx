@@ -38,7 +38,7 @@ export default function Interview({ params }) {
   const [submitting, setSubmitting] = useState(false);
 
   // Timer states:
-  const MAX_TIME = 10; // 5 minutes in seconds
+  const MAX_TIME = 300;
   const [timeLeft, setTimeLeft] = useState(MAX_TIME);
   const [timerRunning, setTimerRunning] = useState(false);
   const timerRef = useRef(null);
