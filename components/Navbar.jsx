@@ -7,8 +7,8 @@ import {
   GraduationCap,
   ChevronDown,
   StarsIcon,
-  BriefcaseBusiness ,
-  ChartLine  
+  BriefcaseBusiness,
+  ChartLine,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -24,18 +24,23 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Image from "next/image";
+
+import neo from "@/public/neo.png";
 
 export default async function Navbar() {
   return (
     <header className="fixed top-0 w-full border-b bg-background/80 backdrop-blur-md z-50 supports-[backdrop-filter]:bg-background/60">
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href="/">NeoHire</Link>
+        <Link href="/" className="font-serif text-2xl ">
+          <Image src={neo} alt="" width={120} height="auto" />
+        </Link>
 
         {/* Action Buttons */}
         <div className="flex items-center space-x-2 md:space-x-4">
           <SignedIn>
-           {/* Growth Tools Dropdown */}
-           <DropdownMenu>
+            {/* Growth Tools Dropdown */}
+            <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button className="flex items-center gap-2">
                   <StarsIcon className="h-4 w-4" />
@@ -44,7 +49,7 @@ export default async function Navbar() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem asChild>
+                <DropdownMenuItem asChild>
                   <Link
                     href="/build-resume"
                     className="flex items-center gap-2"
@@ -55,7 +60,7 @@ export default async function Navbar() {
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/resume" className="flex items-center gap-2">
-                    <ChartLine   className="h-4 w-4" />
+                    <ChartLine className="h-4 w-4" />
                     Resume Analyzer
                   </Link>
                 </DropdownMenuItem>
@@ -70,7 +75,7 @@ export default async function Navbar() {
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/jobs" className="flex items-center gap-2">
-                    <BriefcaseBusiness  className="h-4 w-4" />
+                    <BriefcaseBusiness className="h-4 w-4" />
                     Jobs
                   </Link>
                 </DropdownMenuItem>
@@ -109,9 +114,6 @@ export default async function Navbar() {
                 <UserRoundPen className="h-4 w-4" />
               </Button>
             </Link>
-            
-
-           
           </SignedIn>
 
           <SignedOut>
