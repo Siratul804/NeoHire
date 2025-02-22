@@ -8,9 +8,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { PlusCircle, MinusCircle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 
 const UserRegistration = ({ clerkUser }) => {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [formData, setFormData] = useState({
     clerkId: clerkUser?.id || "",
@@ -123,9 +124,9 @@ const UserRegistration = ({ clerkUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     console.log("Submitting form with data:", formData);
-  
+
     if (!formData.name || !formData.email) {
       toast({
         title: "Error",
@@ -134,7 +135,9 @@ const UserRegistration = ({ clerkUser }) => {
       });
       return;
     }
-  
+
+    setLoading(true); // Start loading
+
     try {
       const response = await fetch("/api/register", {
         method: "POST",
@@ -143,21 +146,40 @@ const UserRegistration = ({ clerkUser }) => {
         },
         body: JSON.stringify(formData),
       });
-  
+
       if (!response.ok) {
         throw new Error("Registration failed");
       }
-  
+
       const data = await response.json();
       console.log("User registered successfully:", data);
-  
+
+      const careerResponse = await fetch("/api/carrierIns", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          skills: formData.skills,
+          clerkId: formData.clerkId,
+        }),
+      });
+
+      if (!careerResponse.ok) {
+        throw new Error("Career recommendation failed");
+      }
+
+      const careerData = await careerResponse.json();
+      console.log("Career recommendations:", careerData);
+
       // Show success toast
       toast({
         title: "Success",
-        description: "User registered successfully!",
+        description:
+          "User registered and career recommendations generated successfully!",
         variant: "default",
       });
-  
+
       // Redirect to dashboard after short delay
       setTimeout(() => {
         router.push("/dashboard");
@@ -169,6 +191,8 @@ const UserRegistration = ({ clerkUser }) => {
         description: "An error occurred during registration. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -364,7 +388,9 @@ const UserRegistration = ({ clerkUser }) => {
             <div className="space-y-4">
               <h3 className="text-lg font-semibold">Preferences</h3>
               <div className="space-y-2">
-                <Label htmlFor="jobType">Job Preference (Remote / Hybrid / Onsite)</Label>
+                <Label htmlFor="jobType">
+                  Job Preference (Remote / Hybrid / Onsite)
+                </Label>
                 <Input
                   id="jobType"
                   value={formData.preferences.jobType}
@@ -401,11 +427,34 @@ const UserRegistration = ({ clerkUser }) => {
           </CardContent>
         </Card>
 
-        <Button type="submit" className="w-full">
-          Save
+        <Button type="submit" disabled={loading}>
+          {loading ? (
+            <div className="flex items-center">
+              <svg
+                className="animate-spin h-5 w-5 mr-2 text-white"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8H4z"
+                ></path>
+              </svg>
+              Saving...
+            </div>
+          ) : (
+            "Save"
+          )}
         </Button>
       </form>
-     
     </main>
   );
 };
