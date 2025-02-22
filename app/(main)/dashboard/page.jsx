@@ -53,7 +53,7 @@ export default function Dashboard() {
               <Trophy className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">10</div>
+              <div className="text-2xl font-bold">0</div>
             </CardContent>
           </Card>
 
@@ -65,7 +65,7 @@ export default function Dashboard() {
               <Target className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">12.5%</div>
+              <div className="text-2xl font-bold">00.0%</div>
             </CardContent>
           </Card>
           <Card>
@@ -76,7 +76,7 @@ export default function Dashboard() {
               <Brain className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">52.9%</div>
+              <div className="text-2xl font-bold">00.0%</div>
             </CardContent>
           </Card>
         </div>
