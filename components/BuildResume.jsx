@@ -149,7 +149,7 @@ export default function BuildResume() {
   }
 
   return (
-    <main className="container space-y-6 px-20 pt-20 md:pt-28 pb-10">
+    <main className="container space-y-6 px-12 pt-20 md:pt-28 pb-10">
       <div className="mb-8">
         <Link href="/dashboard" className="text-sm text-gray-200">
           ← Back to Dashboard
@@ -161,7 +161,7 @@ export default function BuildResume() {
       </p>
       <div className="flex gap-4">
         {/* Left: Resume Form */}
-        <Card className="max-h-[calc(100vh-6rem)] overflow-y-auto w-[40%]">
+        <Card className="max-h-[calc(100vh-6rem)] overflow-y-auto w-[45%]">
           <CardContent className="pt-6 overflow-y-auto pr-4">
             <form className="space-y-4">
               {/* Name & Email */}
