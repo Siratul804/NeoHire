@@ -21,6 +21,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
+import { Bot } from "lucide-react"; // ShadCN icon
+
 export default function Interview({ params }) {
   const { skill } = React.use(params);
   const [questions, setQuestions] = useState([]);
@@ -153,8 +155,16 @@ export default function Interview({ params }) {
 
   if (loading) {
     return (
-      <div className="container px-12 pt-20">
-        NeoHire AI is generating questions...
+      <div className="flex justify-center items-center h-screen bg-black text-white">
+        <div className="flex flex-row items-center space-x-4">
+          {/* Animated Robot Icon */}
+          <Bot className="w-16 h-16 text-white animate-bounce" />
+
+          {/* Animated Text */}
+          <p className="text-xl font-semibold tracking-widest animate-pulse">
+            NeoHire AI is generating...
+          </p>
+        </div>
       </div>
     );
   }

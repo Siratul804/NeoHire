@@ -56,7 +56,7 @@ Only return a valid JSON object following this exact schema:
   "extractedSkills": [String],
   "extractedExperience": [ { "company": String, "role": String, "duration": Number } ],
   "extractedProjects": [String],
-  "aiScore": Number,
+  "aiScore": Number,  // out of 10
   "jobOptions": [ { job object } ]
 }
 
