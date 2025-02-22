@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Loader2, FileText, PenTool, Copy, Edit, Check } from "lucide-react";
+import Link from "next/link";
 
 const CoverLetterGenerator = () => {
   const [companyName, setCompanyName] = useState("");
@@ -9,6 +15,9 @@ const CoverLetterGenerator = () => {
   const [coverLetter, setCoverLetter] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showForm, setShowForm] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,10 +42,9 @@ const CoverLetterGenerator = () => {
       }
 
       const data = await response.json();
-
-      console.log(data.coverLetter);
-
       setCoverLetter(data.coverLetter);
+
+      setShowForm(false);
     } catch (err) {
       setError(
         err.message || "An error occurred while generating the cover letter."
@@ -46,132 +54,156 @@ const CoverLetterGenerator = () => {
     }
   };
 
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(coverLetter);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy text:", err);
+    }
+  };
+
   return (
-    <div style={styles.container}>
-      <h1 style={styles.heading}>Cover Letter Generator</h1>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <div style={styles.formGroup}>
-          <label htmlFor="companyName" style={styles.label}>
-            Company Name:
-          </label>
-          <input
-            type="text"
-            id="companyName"
-            value={companyName}
-            onChange={(e) => setCompanyName(e.target.value)}
-            required
-            style={styles.input}
-          />
-        </div>
-        <div style={styles.formGroup}>
-          <label htmlFor="jobTitle" style={styles.label}>
-            Job Title:
-          </label>
-          <input
-            type="text"
-            id="jobTitle"
-            value={jobTitle}
-            onChange={(e) => setJobTitle(e.target.value)}
-            required
-            style={styles.input}
-          />
-        </div>
-        <div style={styles.formGroup}>
-          <label htmlFor="jobDescription" style={styles.label}>
-            Job Description:
-          </label>
-          <textarea
-            id="jobDescription"
-            value={jobDescription}
-            onChange={(e) => setJobDescription(e.target.value)}
-            required
-            style={styles.textarea}
-          />
-        </div>
-        <button type="submit" disabled={isLoading} style={styles.button}>
-          {isLoading ? "Generating..." : "Generate Cover Letter"}
-        </button>
-      </form>
+    <div className="container space-y-6 px-12 pt-20 md:pt-28 pb-10">
+      <div className="mb-8">
+        <Link href="/dashboard" className="text-sm text-gray-200">
+          ← Back to Dashboard
+        </Link>
+      </div>
+      <h1 className="text-4xl font-bold gradient-title">Cover Letter</h1>
+      <p className="text-muted-foreground mb-4">
+        Build a seamless cover letter with NeoHire AI
+      </p>
 
-      {error && <p style={styles.error}>{error}</p>}
+      {/* Toggle Buttons */}
+      <div className="flex gap-4 mb-6">
+        <Button
+          onClick={() => setShowForm(true)}
+          variant={showForm ? "default" : "outline"}
+          className={`flex-1 ${showForm ? "bg:gradient-title" : ""}`}
+        >
+          <PenTool className="w-4 h-4 mr-2" />
+          Cover Letter Form
+        </Button>
+        <Button
+          onClick={() => setShowForm(false)}
+          variant={!showForm ? "default" : "outline"}
+          className={`flex-1 ${!showForm ? "bg:gradient-title" : ""}`}
+        >
+          <FileText className="w-4 h-4 mr-2" />
+          View Cover Letter
+        </Button>
+      </div>
 
-      {coverLetter && (
-        <div style={styles.coverLetterContainer}>
-          <pre style={styles.coverLetter}>{coverLetter}</pre>
-        </div>
+      {showForm ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>Job Details</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label
+                  htmlFor="companyName"
+                  className="block text-sm font-medium mb-1"
+                >
+                  Company Name
+                </label>
+                <Input
+                  type="text"
+                  id="companyName"
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  required
+                  placeholder="Enter company name"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="jobTitle"
+                  className="block text-sm font-medium mb-1"
+                >
+                  Job Title
+                </label>
+                <Input
+                  type="text"
+                  id="jobTitle"
+                  value={jobTitle}
+                  onChange={(e) => setJobTitle(e.target.value)}
+                  required
+                  placeholder="Enter job title"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="jobDescription"
+                  className="block text-sm font-medium mb-1"
+                >
+                  Job Description
+                </label>
+                <Textarea
+                  id="jobDescription"
+                  value={jobDescription}
+                  onChange={(e) => setJobDescription(e.target.value)}
+                  required
+                  placeholder="Provide the job description"
+                  rows={8}
+                />
+              </div>
+              <Button type="submit" disabled={isLoading} className="w-full">
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Please wait while NeoHire AI is Generating your cover
+                    letter...
+                  </>
+                ) : (
+                  "Generate Cover Letter"
+                )}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      ) : (
+        <Card className="h-full">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle>Generated Cover Letter</CardTitle>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" onClick={handleCopy}>
+                {copied ? (
+                  <>
+                    <Check className="w-4 h-4 mr-2" />
+                    Copied
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-4 h-4 mr-2" />
+                    Copy
+                  </>
+                )}
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+            {coverLetter ? (
+              <div className="bg-gray-50 p-4 rounded-md">
+                <pre className="whitespace-pre-wrap font-sans text-sm leading-relaxed text-gray-800">
+                  {coverLetter}
+                </pre>
+              </div>
+            ) : (
+              <p className="text-center pt-6 pb-32 text-gray-500">
+                Fill the form and generate a seamless cover letter by NeoHire
+                AI!
+              </p>
+            )}
+          </CardContent>
+        </Card>
       )}
     </div>
   );
-};
-
-const styles = {
-  container: {
-    maxWidth: "800px",
-    margin: "0 auto",
-    padding: "20px",
-    fontFamily: "Arial, sans-serif",
-  },
-  heading: {
-    textAlign: "center",
-    color: "#333",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "15px",
-  },
-  formGroup: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "5px",
-  },
-  label: {
-    fontWeight: "bold",
-    color: "#555",
-  },
-  input: {
-    padding: "10px",
-    fontSize: "16px",
-    border: "1px solid #ccc",
-    borderRadius: "5px",
-  },
-  textarea: {
-    padding: "10px",
-    fontSize: "16px",
-    border: "1px solid #ccc",
-    borderRadius: "5px",
-    minHeight: "150px",
-    resize: "vertical",
-  },
-  button: {
-    padding: "10px 20px",
-    fontSize: "16px",
-    backgroundColor: "#007bff",
-    color: "#fff",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-  },
-  error: {
-    color: "red",
-    textAlign: "center",
-  },
-  coverLetterContainer: {
-    marginTop: "20px",
-    padding: "20px",
-    border: "1px solid #ccc",
-    borderRadius: "5px",
-    backgroundColor: "#f9f9f9",
-  },
-  subHeading: {
-    color: "#333",
-  },
-  coverLetter: {
-    whiteSpace: "pre-wrap",
-    fontFamily: "Arial, sans-serif",
-    lineHeight: "1.6",
-    color: "black",
-  },
 };
 
 export default CoverLetterGenerator;
