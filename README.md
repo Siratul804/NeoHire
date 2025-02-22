@@ -67,8 +67,7 @@ By Team The Mavericks - [@Siratul804](https://github.com/Siratul804), [@AsTeriaa
 
 ### 📍 Cover Letter (`/cover-letter`)
 
-![alt text](/public/BuildResume.png)
-![alt text](/public/BuildedResume.png)
+![alt text](/public/coverLetterDone.png)
 
 
 - Collecting
