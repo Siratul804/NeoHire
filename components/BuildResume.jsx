@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import {
   PDFViewer,
-  PDFDownloadLink,
   Document,
   Page,
   Text,
@@ -10,75 +9,108 @@ import {
   StyleSheet,
 } from "@react-pdf/renderer";
 
+// Define styles for the PDF document
 const styles = StyleSheet.create({
-  page: { padding: 40, fontSize: 12, fontFamily: "Helvetica" },
-  header: {
-    marginBottom: 20,
-    textAlign: "center",
-    borderBottom: "2 solid black",
-    paddingBottom: 10,
+  page: {
+    flexDirection: "column",
+    padding: 30,
   },
-  name: { fontSize: 26, fontWeight: "bold", color: "#2C3E50" },
-  contact: { fontSize: 12, color: "#34495E" },
   section: {
-    marginBottom: 20,
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: "#F4F6F7",
+    marginBottom: 15,
   },
-  sectionTitle: {
-    fontSize: 16,
+  header: {
+    fontSize: 24,
+    marginBottom: 10,
+    textAlign: "center",
     fontWeight: "bold",
-    color: "#1F618D",
+  },
+  subHeader: {
+    fontSize: 18,
+    marginBottom: 10,
+    fontWeight: "bold",
+    borderBottom: "1px solid #000",
+    paddingBottom: 5,
+  },
+  text: {
+    fontSize: 12,
     marginBottom: 5,
   },
-  text: { lineHeight: 1.5, color: "#2C3E50" },
+  boldText: {
+    fontSize: 12,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  contactInfo: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10,
+  },
 });
 
 const MyDocument = ({ data }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      <View style={styles.header}>
-        <Text style={styles.name}>{data.name}</Text>
-        <Text style={styles.contact}>
-          {data.email} | {data.phone}
-        </Text>
-        <Text style={styles.contact}>{data.address}</Text>
-        <Text style={styles.contact}>
-          LinkedIn: {data.linkedin} | GitHub: {data.github}
-        </Text>
+      {/* Contact Information */}
+      <View style={styles.section}>
+        <Text style={styles.header}>{data.name}</Text>
+        <View style={styles.contactInfo}>
+          <Text style={styles.text}>Email: {data.email}</Text>
+          <Text style={styles.text}>Phone: {data.phone}</Text>
+          <Text style={styles.text}>Address: {data.address}</Text>
+        </View>
+        <View style={styles.contactInfo}>
+          <Text style={styles.text}>LinkedIn: {data.linkedin}</Text>
+          <Text style={styles.text}>GitHub: {data.github}</Text>
+        </View>
       </View>
 
+      {/* Description */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Description</Text>
+        <Text style={styles.subHeader}>About Me</Text>
         <Text style={styles.text}>{data.description}</Text>
       </View>
 
+      {/* Skills */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Skills</Text>
+        <Text style={styles.subHeader}>Skills</Text>
         <Text style={styles.text}>{data.skills}</Text>
       </View>
 
+      {/* Experience */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Experience</Text>
-        <Text style={styles.text}>
-          {data.expTitle} at {data.expCompany}
-        </Text>
-        <Text style={styles.text}>
-          {data.expStart} - {data.expEnd}
-        </Text>
-        <Text style={styles.text}>{data.expDescription}</Text>
+        <Text style={styles.subHeader}>Experience</Text>
+        <View style={{ marginBottom: 10 }}>
+          <Text style={styles.boldText}>
+            {data.expTitle} at {data.expCompany}
+          </Text>
+          <Text style={styles.text}>
+            {data.expStart} - {data.expEnd}
+          </Text>
+          <Text style={styles.text}>{data.expDescription}</Text>
+        </View>
       </View>
 
+      {/* Education */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Education</Text>
-        <Text style={styles.text}>
-          {data.eduDegree} from {data.eduSchool}
-        </Text>
-        <Text style={styles.text}>
-          {data.eduStart} - {data.eduEnd}
-        </Text>
-        <Text style={styles.text}>{data.eduDescription}</Text>
+        <Text style={styles.subHeader}>Education</Text>
+        <View style={{ marginBottom: 10 }}>
+          <Text style={styles.boldText}>
+            {data.eduDegree} from {data.eduSchool}
+          </Text>
+          <Text style={styles.text}>
+            {data.eduStart} - {data.eduEnd}
+          </Text>
+          <Text style={styles.text}>{data.eduDescription}</Text>
+        </View>
+      </View>
+
+      {/* Projects */}
+      <View style={styles.section}>
+        <Text style={styles.subHeader}>Projects</Text>
+        <View style={{ marginBottom: 10 }}>
+          <Text style={styles.boldText}>{data.projectTitle}</Text>
+          <Text style={styles.text}>{data.projectDescription}</Text>
+        </View>
       </View>
     </Page>
   </Document>
@@ -104,6 +136,8 @@ export default function BuildResume() {
     eduStart: "",
     eduEnd: "",
     eduDescription: "",
+    projectTitle: "",
+    projectDescription: "",
   });
 
   const [showPreview, setShowPreview] = useState(false);
@@ -193,23 +227,23 @@ export default function BuildResume() {
             onChange={handleChange}
             style={{ gridColumn: "1 / -1", height: "60px" }}
           />
+          {/* Project Fields */}
+          <input
+            name="projectTitle"
+            placeholder="Project Title"
+            onChange={handleChange}
+          />
+          <textarea
+            name="projectDescription"
+            placeholder="Project Description"
+            onChange={handleChange}
+            style={{ gridColumn: "1 / -1", height: "60px" }}
+          />
         </div>
         <div style={{ margin: "20px 0" }}>
           <button onClick={() => setShowPreview(!showPreview)}>
             {showPreview ? "Hide Preview" : "Show Preview"}
           </button>
-          <PDFDownloadLink
-            document={<MyDocument data={formData} />}
-            fileName="resume.pdf"
-            style={{
-              marginLeft: "20px",
-              padding: "10px",
-              background: "#007bff",
-              color: "white",
-            }}
-          >
-            {({ loading }) => (loading ? "Generating..." : "Download PDF")}
-          </PDFDownloadLink>
         </div>
         {showPreview && (
           <PDFViewer style={{ width: "100%", height: "500px" }}>
