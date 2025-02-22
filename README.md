@@ -25,15 +25,12 @@ By Team The Mavericks - [@Siratul804](https://github.com/Siratul804), [@AsTeriaa
 
 ## 🌟 Overview
 
-**NeoHire** is your AI platform for
-professional success
-advance your career with personalized Resume screening, interview prep, and AI-powered tools for job success.
-
+**NeoHire** leverages AI to streamline recruitment by automating resume screening, offering unbiased candidate evaluations, and predicting career growth. Its features include smart job matching based on skills and preferences, and AI-powered interview analysis that assesses speech and confidence. Additionally, Neohire provides tools like an AI resume and cover letter generator to further simplify the job application process.
 ## 🚀 Features
 
 ### 📍 Dashboard (`/dashboard`)
 
-![alt text](/public/neo.png)
+![alt text](/public/Dashboard.png)
 
 
 - Profile
@@ -51,7 +48,7 @@ advance your career with personalized Resume screening, interview prep, and AI-p
 
 ### 📍 Resume Analyzer (`/resume`)
 
-![alt text](/public/neo.png)
+![alt text](/public/ResumeAnaResult.png)
 
 
 - AI Score
@@ -61,7 +58,8 @@ advance your career with personalized Resume screening, interview prep, and AI-p
 
 ### 📍 Resume Builder (`/build-resume`)
 
-![alt text](/public/neo.png)
+![alt text](/public/BuildResume.png)
+![alt text](/public/BuildedResume.png)
 
 
 - Collect Resume Details
@@ -69,7 +67,8 @@ advance your career with personalized Resume screening, interview prep, and AI-p
 
 ### 📍 Cover Letter (`/cover-letter`)
 
-![alt text](/public/neo.png)
+![alt text](/public/BuildResume.png)
+![alt text](/public/BuildedResume.png)
 
 
 - Collecting
@@ -82,7 +81,7 @@ advance your career with personalized Resume screening, interview prep, and AI-p
 
 ### 📍 Trendy Jobs (`/jobs`)
 
-![alt text](/public/neo.png)
+![alt text](/public/Jobs.png)
 
 
 - Trending jobs
@@ -91,23 +90,26 @@ advance your career with personalized Resume screening, interview prep, and AI-p
 
 ### 📍 Mock Interview (`/interview`)
 
-![alt text](/public/neo.png)
+![alt text](/public/in4.png)
 
 
 - Based on selected skill - AI Question
 - Voice / Video Uploder
 
 
-![alt text](/public/neo.png)
+![alt text](/public/in5.png)
 
 
-- AI Score
-- 
+- Overall Score
+- Speech clarity
+- Confidence
+- Strengths
+- Area For Improvements
 
 
 ### 📍 Career Trends (`/career-insights`)
 
-![alt text](/public/neo.png)
+![alt text](/public/CarrierIns.png)
 
 
 - Key Industry Trends
@@ -189,7 +191,7 @@ npm run dev
 
 ### AI/ML
 
-- **Language Models**: GROK llama-3.3-70b-versatile
+- **Language Models**: GROQ llama-3.3-70b-versatile
 - **Speech**: Google Cloud Text-to-Speech
 
 ## 📝 License
