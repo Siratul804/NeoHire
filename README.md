@@ -6,13 +6,6 @@ By Team The Mavericks - [@Siratul804](https://github.com/Siratul804), [@AsTeriaa
 
 <div align="center">
 
-[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react)](https://reactjs.org/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-Latest-green?style=for-the-badge&logo=mongodb)](https://www.mongodb.com/)
-[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com)
-[![OpenAI](https://img.shields.io/badge/OpenAI-API-412991?style=for-the-badge&logo=openai)](https://openai.com)
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker)](https://www.docker.com/)
-
 <br />
 
   <img src="/public/neo.png" alt="ide" width="500"/>
@@ -21,11 +14,12 @@ By Team The Mavericks - [@Siratul804](https://github.com/Siratul804), [@AsTeriaa
 
 [Report Bug](https://github.com/Siratul804/NeoHire/issues) · [Request Feature](https://github.com/Siratul804/NeoHire/issues)
 
-![GitHub contributors](https://img.shields.io/github/contributors/Siratul804/NeoHire)
-![GitHub stars](https://img.shields.io/github/stars/Siratul804/NeoHire)
-![GitHub forks](https://img.shields.io/github/forks/Siratul804/NeoHire)
-![GitHub issues](https://img.shields.io/github/issues/Siratul804/NeoHire)
-![GitHub license](https://img.shields.io/github/license/Siratul804/NeoHire)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react)](https://reactjs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Latest-green?style=for-the-badge&logo=mongodb)](https://www.mongodb.com/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com)
+[![OpenAI](https://img.shields.io/badge/OpenAI-API-412991?style=for-the-badge&logo=openai)](https://openai.com)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker)](https://www.docker.com/)
 
 </div>
 
@@ -35,23 +29,93 @@ By Team The Mavericks - [@Siratul804](https://github.com/Siratul804), [@AsTeriaa
 professional success
 advance your career with personalized Resume screening, interview prep, and AI-powered tools for job success.
 
-## 🚀 Key Features
+## 🚀 Features
 
 ### 📍 Dashboard (`/dashboard`)
 
-![alt text](public/screenshots/image.png)
+![alt text](/public/neo.png)
 
-- Analytics dashboard with real-time metrics
-- Key statistics:
-  - Words translated
-  - Stories written
-  - Active users
-  - Contributions made
-- Interactive charts:
-  - Daily activity trends
-  - Translation metrics
-  - User engagement data
-- Responsive layout with grid system
+
+- Profile
+- Carrier Insights
+- Growth Tools:
+  - Build Resume
+  - Resume Analyzer
+  - Cover Letter
+  - Jobs
+  - Interview Prep
+- Interview scores over time
+- Interview taken
+- Resume Score
+- Average Score
+
+### 📍 Resume Analyzer (`/resume`)
+
+![alt text](/public/neo.png)
+
+
+- AI Score
+- AI Feedback
+- AI Recommended Jobs
+
+
+### 📍 Resume Builder (`/build-resume`)
+
+![alt text](/public/neo.png)
+
+
+- Collect Resume Details
+- Generate Resume
+
+### 📍 Cover Letter (`/cover-letter`)
+
+![alt text](/public/neo.png)
+
+
+- Collecting
+   - Company Name
+   - Job Title
+   - Job Description
+     
+- Generate Cover Letter With AI
+
+
+### 📍 Trendy Jobs (`/jobs`)
+
+![alt text](/public/neo.png)
+
+
+- Trending jobs
+- Filter, Sort, Search based on you need
+
+
+### 📍 Mock Interview (`/interview`)
+
+![alt text](/public/neo.png)
+
+
+- Based on selected skill - AI Question
+- Voice / Video Uploder
+
+
+![alt text](/public/neo.png)
+
+
+- AI Score
+- 
+
+
+### 📍 Career Trends (`/career-insights`)
+
+![alt text](/public/neo.png)
+
+
+- Key Industry Trends
+- Recommended Skills
+- Salary Ranges by Role
+
+
+
 
 ## 🚀 Installation Guide
 
