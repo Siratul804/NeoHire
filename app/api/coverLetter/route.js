@@ -23,7 +23,7 @@ export async function POST(req) {
       
       The cover letter should follow this structure:
       
-      [Your Name]
+      [Your Name] // don't use any example name
       [Your Address] | [Your Phone] | [Your Email]
 
       [Date]
@@ -49,7 +49,7 @@ export async function POST(req) {
           { role: "system", content: systemPrompt },
           {
             role: "user",
-            content: `Generate a cover letter for the ${jobTitle} position at ${companyName}. The job description is: ${jobDescription}`,
+            content: `Generate a cover letter for the ${jobTitle} position at ${companyName}. The job description is: ${jobDescription}.`,
           },
         ],
         model: "llama-3.3-70b-versatile",
