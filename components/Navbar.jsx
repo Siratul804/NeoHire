@@ -26,14 +26,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
 
-import neo from "@/public/neo.png";
+import logo from "@/public/logo.png";
 
 export default async function Navbar() {
   return (
     <header className="fixed top-0 w-full border-b bg-background/80 backdrop-blur-md z-50 supports-[backdrop-filter]:bg-background/60">
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="font-serif text-2xl ">
-          <Image src={neo} alt="" width={120} height="auto" />
+          <Image src={logo} alt="" width={120} height="auto" />
         </Link>
 
         {/* Action Buttons */}
