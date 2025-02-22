@@ -55,8 +55,44 @@ export default function UserProfile() {
     }
   }, [userData, router]);
 
-  if (!isLoaded) return <p>Loading Clerk user...</p>;
-  if (loading) return <p>Loading user data...</p>;
+  if (!isLoaded)
+    return (
+      <div className="flex items-center justify-center h-screen bg-black">
+        <div className="flex space-x-2">
+          <div
+            className="w-2 h-12 bg-white rounded animate-bounce"
+            style={{ animationDelay: "0s" }}
+          ></div>
+          <div
+            className="w-2 h-12 bg-white rounded animate-bounce"
+            style={{ animationDelay: "0.2s" }}
+          ></div>
+          <div
+            className="w-2 h-12 bg-white rounded animate-bounce"
+            style={{ animationDelay: "0.4s" }}
+          ></div>
+        </div>
+      </div>
+    );
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-screen bg-black">
+        <div className="flex space-x-2">
+          <div
+            className="w-2 h-12 bg-white rounded animate-bounce"
+            style={{ animationDelay: "0s" }}
+          ></div>
+          <div
+            className="w-2 h-12 bg-white rounded animate-bounce"
+            style={{ animationDelay: "0.2s" }}
+          ></div>
+          <div
+            className="w-2 h-12 bg-white rounded animate-bounce"
+            style={{ animationDelay: "0.4s" }}
+          ></div>
+        </div>
+      </div>
+    );
   if (error) return <p>Error: {error}</p>;
 
   if (showRegistration) {
