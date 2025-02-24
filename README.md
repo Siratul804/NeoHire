@@ -2,8 +2,7 @@
 
 An AI Platform For Your Professional Success
 
-By Team The Mavericks - [@Siratul804](https://github.com/Siratul804), [@AsTeriaa09](https://github.com/AsTeriaa09), [@atik65](https://github.com/atik65), [mdyhakash](https://github.com/mdyhakash)
-
+By Team The Mavericks - [@Siratul804](https://github.com/Siratul804), [@AsTeriaa09](https://github.com/AsTeriaa09)
 <div align="center">
 
 <br />
@@ -199,4 +198,4 @@ MIT License - see [LICENSE](LICENSE)
 
 ---
 
-Created by Team The Mavericks for MIST Preliminary Round Hackathon
+Created by Team The Mavericks for MIST Project Showcase
