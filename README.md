@@ -198,4 +198,4 @@ MIT License - see [LICENSE](LICENSE)
 
 ---
 
-Created by Team The Mavericks for MIST Project Showcase
+Created by Team The Mavericks
