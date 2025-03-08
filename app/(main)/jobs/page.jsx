@@ -62,7 +62,9 @@ const Jobs = () => {
 
         <div className="flex gap-4">
           <div className="w-44">
-            <Select onValueChange={(value) => handleSelectChange("jobType", value)}>
+            <Select
+              onValueChange={(value) => handleSelectChange("jobType", value)}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Job Preference" />
               </SelectTrigger>
@@ -76,7 +78,9 @@ const Jobs = () => {
           </div>
 
           <div className="w-44">
-            <Select onValueChange={(value) => handleSelectChange("industry", value)}>
+            <Select
+              onValueChange={(value) => handleSelectChange("industry", value)}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Preferred Industry" />
               </SelectTrigger>
@@ -105,7 +109,9 @@ const Jobs = () => {
         {currentJobs.length > 0 ? (
           currentJobs.map((job) => (
             <Card key={job.id} className="relative">
-              <Badge variant="secondary" className="absolute top-4 right-4 p-2">{job.jobType}</Badge>
+              <Badge variant="secondary" className="absolute top-4 right-4 p-2">
+                {job.jobType}
+              </Badge>
 
               <CardHeader>
                 <CardTitle>{job.title}</CardTitle>
@@ -124,12 +130,16 @@ const Jobs = () => {
                     </Badge>
                   ))}
                 </div>
-                <Button className="mt-4">Apply</Button>
+                <Link href={job.jobUrl} target="_blank">
+                  <Button className="mt-4">Apply</Button>
+                </Link>
               </CardContent>
             </Card>
           ))
         ) : (
-          <p className="text-center text-gray-400">No jobs found matching your criteria.</p>
+          <p className="text-center text-gray-400">
+            No jobs found matching your criteria.
+          </p>
         )}
       </div>
 
@@ -142,7 +152,9 @@ const Jobs = () => {
           >
             Prev
           </Button>
-          <span className="px-4 py-2">Page {currentPage} of {totalPages}</span>
+          <span className="px-4 py-2">
+            Page {currentPage} of {totalPages}
+          </span>
           <Button
             disabled={currentPage === totalPages}
             onClick={() => setCurrentPage(currentPage + 1)}
