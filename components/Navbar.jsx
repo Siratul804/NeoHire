@@ -117,9 +117,9 @@ export default async function Navbar() {
           </SignedIn>
 
           <SignedOut>
-            <SignInButton>
+            <Link href="/sign-in">
               <Button variant="outline">Sign In</Button>
-            </SignInButton>
+            </Link>
           </SignedOut>
 
           <SignedIn>
